@@ -1,0 +1,36 @@
+{% extends 'layouts.html' %}
+
+{% block body %}
+
+{% module AsideModule() %}
+
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+  <!-- Navbar -->
+  {% module NavbarModule() %}
+  
+  <!-- End Navbar -->
+  <div class="container-fluid py-4">
+    <form method="post" action='/device/add'>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Name</label>
+          <input name="name" value="{{ device.get('name', '') }}" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Description</label>
+          <input name="description" value="{{ device.get('description', '') }}" class="form-control" id="exampleInputPassword1">
+        </div>
+
+        <div class="form-group">
+          <label for="exampleInputPassword1">Status</label>
+          <input name="status" value="{{ device.get('status', '') }}" class="form-control" id="exampleInputPassword1">
+        </div>
+        <input type="hidden" name="id" value={{ device.get('_id', '') }}></input>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  
+  </div>
+</main>
+{% module FixedPluginModule() %}
+
+
+{% end %}

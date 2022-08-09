@@ -1,0 +1,98 @@
+{% extends 'layouts.html' %}
+
+{% block body %}
+
+{% module AsideModule() %}
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+  <!-- Navbar -->
+
+  {% module NavbarModule() %}
+  <!-- End Navbar -->
+  <div class="container-fluid py-4">
+    <a href="/device/add">
+    <button type="button" class="btn btn-light">New</button>
+    </a>
+    <div class="row">
+      <div class="col-12">
+        <div class="card mb-4">
+          <div class="card-header pb-0">
+            <h6>Devices table</h6>
+          </div>
+          <div class="card-body px-0 pt-0 pb-2">
+            <div class="table-responsive p-0">
+              <table class="table align-items-center mb-0">
+                <thead>
+                  <tr>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Description</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
+                    <th class="text-secondary opacity-7"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for device in devices %}
+                  <tr>
+                    <td>
+                      <div class="d-flex px-2 py-1">
+                        
+                        <div class="d-flex flex-column justify-content-center">
+                          <h6 class="mb-0 text-sm">{{ device.get('name', '') }}</h6>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <p class="text-xs font-weight-bold mb-0">{{ device.get('description', '') }}</p>
+                    </td>
+                    <td class="align-middle text-center text-sm">
+                      <span class="badge badge-sm bg-gradient-success">{{ device.get('status', '') }}</span>
+                    </td>
+                    <td class="align-middle text-center">
+                      
+                    </td>
+                    <td class="align-middle">
+                      <a onclick="theFunction('{{ device['_id'] }}')" href="javascript:{}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                        Assign
+                      </a>
+                    </td>
+                    <td class="align-middle">
+                      <div class="ms-auto text-end">
+                        <form action="device/remove/{{ device.get('_id', '') }}" method="post" class="btn btn-link text-danger text-gradient px-3 mb-0">
+                          <button type="submit" class="btn btn-link text-danger text-gradient px-3 mb-0"><i class="far fa-trash-alt me-2" aria-hidden="true"></i>Delete</button>
+
+                        </form>
+                        <a class="btn btn-link text-dark px-3 mb-0" href="/device/edit/{{ device['_id'] }}"><i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</a>
+                      </div>
+                    </td>
+                  </tr>
+                  {% end %}
+                  <form id="user-selected" method="POST" action="/history">
+                    <select name="user_id" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                      <option selected>Select Assigned Employee</option>
+                      {% for user in users %}
+                      {{  user['username'] }}
+                        <option value="{{ user['_id'] }}">{{ user['username'] }}</option>
+                      {% end %}
+                    </select>
+                  </form>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<script>
+  function theFunction(id) { 
+    var form = document.getElementById('user-selected');
+    var input = document.createElement('input');
+    input.setAttribute('name', 'device_id');
+    input.setAttribute('value', id);
+    input.setAttribute('type', "hidden");
+    form.appendChild(input);
+    form.submit();
+  }
+</script>
+{% module FixedPluginModule() %}
+{% end %}

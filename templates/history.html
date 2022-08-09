@@ -1,0 +1,92 @@
+{% extends 'layouts.html' %}
+
+{% block body %}
+
+{% module AsideModule() %}
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+  <!-- Navbar -->
+
+  {% module NavbarModule() %}
+  <!-- End Navbar -->
+  <div class="container-fluid py-4">
+   
+    <div class="row">
+      <div class="col-12">
+        <div class="card mb-4">
+          <div class="card-header pb-0">
+            <h6>Tracking</h6>
+          </div>
+          <div class="card-body px-0 pt-0 pb-2">
+            <div class="table-responsive p-0">
+              <table class="table align-items-center mb-0">
+                <thead>
+                  <tr>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">User Name</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Email</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Device Name</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Description</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Borrowed At</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Withdraw At</th>
+                    <th class="text-secondary opacity-7"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for history in histories %}
+                  <tr>
+                    <td class="align-middle text-center text-sm">
+                        <p class="text-xs font-weight-bold mb-0">{{ history['user']['username'] }}</p>
+                    </td>
+                      
+                    <td>
+                      <div class="d-flex px-2 py-1">
+                        
+                        <div class="d-flex flex-column justify-content-center">
+                          <h6 class="mb-0 text-sm">{{ history['user']['email'] }}</h6>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td class="align-middle text-center text-sm">
+                        <p class="text-xs font-weight-bold mb-0">{{ history['device']['name'] }}</p>
+                    </td>
+                      
+                    <td>
+                      <div class="d-flex px-2 py-1">
+                        
+                        <div class="d-flex flex-column justify-content-center">
+                          <h6 class="mb-0 text-sm">{{ history['device']['description'] }}</h6>
+                        </div>
+                      </div>
+                    </td>
+                    <td class="align-middle text-center text-sm">
+                        <p class="text-xs font-weight-bold mb-0">
+                            {{ str(history.get('borrowed_at', 'None'))[:19] }}
+                        </p>
+                    
+                        </td>
+                    <td class="align-middle text-center text-sm">
+                        <p class="text-xs font-weight-bold mb-0">{{ str(history.get('withdraw_at', 'None'))[:19] }}</p>
+                    </td>
+                    
+                    <td class="align-middle">
+                        {% if history['withdraw_at'] == None %}
+                        <div class="ms-auto text-end">
+                            <form id="withdraw-device" action="history/{{ history['_id'] }}" method="post" class="btn btn-link text-danger text-gradient px-3 mb-0">
+                                <button type="submit" class="btn btn-link text-danger text-gradient px-3 mb-0">Withdraw</button>
+                            </form>
+                        </div>
+                      {% end %}
+                    </td>
+                  </tr>
+                  {% end %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% module FixedPluginModule() %}
+{% end %}
